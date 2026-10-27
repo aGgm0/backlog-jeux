@@ -4,14 +4,27 @@ namespace App\Entity;
 
 use App\Repository\JeuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
 class Jeu
 {
-    #[ORM\Id]
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->sansFin && $this->statut === 'fini') {
+            $context->buildViolation('Un jeu sans fin ne peut pas être "fini".')
+                ->atPath('statut')
+                ->addViolation();
+        }
+    }
+    #[ORM\Id]   
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(nullable: true)]
+    #[Assert\Range(min: 0, max: 10, notInRangeMessage: 'La note doit être entre {{ min }} et {{ max }}.')]
+    private ?int $note = null;
 
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
@@ -21,9 +34,6 @@ class Jeu
 
     #[ORM\Column(length: 50)]
     private ?string $statut = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $note = null;
 
     #[ORM\Column]
     private ?bool $sansFin = null;
