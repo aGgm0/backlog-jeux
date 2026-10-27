@@ -25,6 +25,9 @@ class Jeu
     #[ORM\Column(nullable: true)]
     private ?int $note = null;
 
+    #[ORM\Column]
+    private ?bool $sansFin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Jeu
     public function setNote(?int $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function isSansFin(): ?bool
+    {
+        return $this->sansFin;
+    }
+
+    public function setSansFin(bool $sansFin): static
+    {
+        $this->sansFin = $sansFin;
 
         return $this;
     }
