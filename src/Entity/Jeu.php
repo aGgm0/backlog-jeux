@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enum\StatutJeu;
 use App\Repository\JeuRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
 
 #[ORM\Entity(repositoryClass: JeuRepository::class)]
 class Jeu
@@ -26,11 +25,8 @@ class Jeu
     #[ORM\Column(length: 100)]
     private ?string $plateforme = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $statut = null;
-
-    #[ORM\Column]
-    private ?bool $sansFin = false;
+    #[ORM\Column(length: 50, enumType: StatutJeu::class)]
+    private ?StatutJeu $statut = null;
 
     public function getId(): ?int
     {
@@ -61,12 +57,12 @@ class Jeu
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function getStatut(): ?StatutJeu
     {
         return $this->statut;
     }
 
-    public function setStatut(string $statut): static
+    public function setStatut(StatutJeu $statut): static
     {
         $this->statut = $statut;
 
@@ -81,18 +77,6 @@ class Jeu
     public function setNote(?int $note): static
     {
         $this->note = $note;
-
-        return $this;
-    }
-
-    public function isSansFin(): ?bool
-    {
-        return $this->sansFin;
-    }
-
-    public function setSansFin(bool $sansFin): static
-    {
-        $this->sansFin = $sansFin;
 
         return $this;
     }

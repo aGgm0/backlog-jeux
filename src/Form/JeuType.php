@@ -6,6 +6,8 @@ use App\Entity\Jeu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use App\Enum\StatutJeu;
 
 class JeuType extends AbstractType
 {
@@ -14,9 +16,11 @@ class JeuType extends AbstractType
         $builder
             ->add('titre')
             ->add('plateforme')
-            ->add('statut')
+            ->add('statut', EnumType::class, [
+                'class' => StatutJeu::class,
+                'choice_label' => fn (StatutJeu $s) => $s->label(),
+            ])
             ->add('note')
-            ->add('sansFin')
         ;
     }
 

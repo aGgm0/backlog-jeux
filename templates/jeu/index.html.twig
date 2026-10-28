@@ -1,43 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Jeu index{% endblock %}
+{% block title %}Mon backlog de jeux{% endblock %}
 
 {% block body %}
-    <h1>Jeu index</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Mon backlog de jeux</h1>
+        <a href="{{ path('app_jeu_new') }}" class="btn btn-primary">+ Ajouter un jeu</a>
+    </div>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
             <tr>
-                <th>Id</th>
                 <th>Titre</th>
                 <th>Plateforme</th>
                 <th>Statut</th>
                 <th>Note</th>
-                <th>SansFin</th>
-                <th>actions</th>
+                <th class="text-end">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for jeu in jeus %}
             <tr>
-                <td>{{ jeu.id }}</td>
                 <td>{{ jeu.titre }}</td>
                 <td>{{ jeu.plateforme }}</td>
-                <td>{{ jeu.statut }}</td>
-                <td>{{ jeu.note }}</td>
-                <td>{{ jeu.sansFin ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_jeu_show', {'id': jeu.id}) }}">show</a>
-                    <a href="{{ path('app_jeu_edit', {'id': jeu.id}) }}">edit</a>
+                <td><span class="badge text-bg-{{ jeu.statut.color }}">{{ jeu.statut.label }}</span></td>
+                <td>{{ jeu.note is not null ? jeu.note ~ ' / 10' : '—' }}</td>
+                <td class="text-end">
+                    <a href="{{ path('app_jeu_show', {'id': jeu.id}) }}" class="btn btn-sm btn-outline-secondary">Voir</a>
+                    <a href="{{ path('app_jeu_edit', {'id': jeu.id}) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="5" class="text-center text-muted py-4">Aucun jeu pour l'instant.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_jeu_new') }}">Create new</a>
 {% endblock %}
